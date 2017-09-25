@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "generic-pool": "2.4.3",
-    "object-assign": "4.1.0"
+    "object-assign": "4.1.0",
+    "promise-events": "^0.1.3"
   }
 }

@@ -22,6 +22,44 @@ describe('events', function () {
     })
   })
 
+  it('waits on connect until finished', function (done) {
+    var pool = new Pool()
+    var emittedClient = false
+    pool.on('connect', function (client) {
+      return client.query('SELECT now()')
+      .then(() => {
+        emittedClient = client
+      })
+    })
+
+    pool.connect(function (err, client, release) {
+      if (err) return done(err)
+      release()
+      pool.end()
+      expect(client).to.be(emittedClient)
+      done()
+    })
+  })
+
+  it('catch error on connect', function (done) {
+    var pool = new Pool()
+    var connectingErr = 'connecting error'
+    pool.on('connect', function (client) {
+      return client.query('SELECT now()')
+      .then(() => {
+        throw new Error(connectingErr)
+      })
+    })
+
+    pool.connect(function (err, client, release) {
+      if (!err) return done('did not catch the error')
+      release()
+      pool.end()
+      expect(err.message).to.equal(connectingErr)
+      done()
+    })
+  })
+
   it('emits "connect" only with a successful connection', function (done) {
     var pool = new Pool({
       // This client will always fail to connect
