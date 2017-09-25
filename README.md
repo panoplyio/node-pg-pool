@@ -5,7 +5,7 @@ A connection pool for node-postgres
 
 ## install
 ```sh
-npm i pg-pool pg
+npm i pg-pool pg 
 ```
 
 ## use
@@ -78,7 +78,7 @@ const pool = new Pool(config);
     ssl: true
   }
 */
-``` 
+```
 
 ### acquire clients with a promise
 
