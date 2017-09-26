@@ -22,11 +22,13 @@ describe('events', function () {
     })
   })
 
-  it('waits on connect until finished', function (done) {
+  it.only('waits on connect until finished', function (done) {
     var pool = new Pool()
     var emittedClient = false
     pool.on('connect', function (client) {
-      return client.query('SELECT now()')
+      return new Promise(resolve => {
+        setTimeout(resolve, 50)
+      })
       .then(() => {
         emittedClient = client
       })
@@ -41,21 +43,17 @@ describe('events', function () {
     })
   })
 
-  it('catch error on connect', function (done) {
+  it('catch error on connect listener', function (done) {
     var pool = new Pool()
-    var connectingErr = 'connecting error'
+    var listenerErr = 'Listener error'
     pool.on('connect', function (client) {
-      return client.query('SELECT now()')
-      .then(() => {
-        throw new Error(connectingErr)
-      })
+      throw new Error(listenerErr)
     })
 
     pool.connect(function (err, client, release) {
       if (!err) return done('did not catch the error')
-      release()
       pool.end()
-      expect(err.message).to.equal(connectingErr)
+      expect(err.message).to.equal(listenerErr)
       done()
     })
   })

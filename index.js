@@ -106,7 +106,11 @@ Pool.prototype._create = function (cb) {
         this.log('came back from connect')
         cb(null, client)
       })
-      .catch(err => cb(err, null))
+      .catch(err => {
+        this.log('connect listener error:', err)
+        this.pool.destroy(client)
+        cb(err, null)
+      })
   }.bind(this))
 }
 
