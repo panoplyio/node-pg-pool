@@ -22,7 +22,7 @@ describe('events', function () {
     })
   })
 
-  it.only('waits on connect until finished', function (done) {
+  it('waits on connect until finished', function (done) {
     var pool = new Pool()
     var emittedClient = false
     pool.on('connect', function (client) {
