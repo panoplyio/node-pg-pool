@@ -1,5 +1,5 @@
 language: node_js
-
+dist: precise
 matrix:
   include:
     - node_js: "4"

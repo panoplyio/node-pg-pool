@@ -5,7 +5,7 @@ A connection pool for node-postgres
 
 ## install
 ```sh
-npm i pg-pool pg 
+npm i pg-pool pg
 ```
 
 ## use
